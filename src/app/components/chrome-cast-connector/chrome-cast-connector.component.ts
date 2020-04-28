@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { ChromeCastService } from './../../services/chrome-cast.service';
-import { ChromeCastState } from './../connect.enum';
+import { ChromeCastState } from './connect.enum';
 import { Component, NgZone, OnInit } from '@angular/core';
 
 import { ipcRenderer } from 'electron';

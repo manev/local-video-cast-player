@@ -1,8 +1,9 @@
 import { Injectable, NgZone } from '@angular/core';
 
 import { ipcRenderer } from 'electron';
-import { ChromeCastState } from '../components/connect.enum';
-import { BehaviorSubject, Observable } from 'rxjs';
+
+import { BehaviorSubject } from 'rxjs';
+import { ChromeCastState } from '../components/chrome-cast-connector/connect.enum';
 
 @Injectable({
   providedIn: 'root'
