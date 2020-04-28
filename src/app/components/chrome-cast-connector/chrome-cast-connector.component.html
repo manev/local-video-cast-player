@@ -1,0 +1,41 @@
+<div>
+  <a *ngIf="(chromeCastState$ | async) === ChromeCastState.NotConnected" style="width: 250px;" mat-flat-button
+    color="accent" routerLink="." (click)="searchDevices()">
+    Search for ChromeCast devices
+  </a>
+
+  <div *ngIf="(chromeCastState$ | async) === ChromeCastState.Searching" class="row">
+    <a style="width: 250px;" mat-flat-button color="accent" routerLink=".">
+      Searching Devices:
+    </a>
+    <mat-spinner strokeWidth="2" color="primary" diameter="20" style="margin-left: -60px; margin-top: 7px;">
+    </mat-spinner>
+  </div>
+
+  <div *ngIf="(chromeCastState$ | async) === ChromeCastState.DisplayAllDevices" class="row">
+    <a mat-flat-button color="accent" style="width: 250px;" routerLink="." [matMenuTriggerFor]="rootMenu">
+      Available Devices: ({{(devices$ | async)?.length}})
+    </a>
+
+    <mat-menu #rootMenu="matMenu" style="width: 250px;">
+      <button style="width: 250px;" *ngFor="let device of devices$ | async" mat-menu-item
+        (click)="deviceSelected(device)">
+        {{device.friendlyName}} - {{device.host}}
+      </button>
+    </mat-menu>
+  </div>
+
+  <div *ngIf="(chromeCastState$ | async) === ChromeCastState.Connected" class="row">
+    <a *ngIf="selectedDevice" mat-flat-button color="accent" style="width: 250px;" routerLink="."
+      [matMenuTriggerFor]="rootMenu">
+      {{selectedDevice.friendlyName}} - {{selectedDevice.host}}
+    </a>
+
+    <mat-menu #rootMenu="matMenu" style="width: 250px;">
+      <button style="width: 250px;" mat-menu-item (click)="diconnect()">
+        Disconnect
+      </button>
+    </mat-menu>
+  </div>
+
+</div>
