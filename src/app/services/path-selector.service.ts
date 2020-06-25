@@ -79,6 +79,10 @@ export class PathSelectorService {
 
             fs.lstat(selectedPath, (error, state) => {
 
+                if (error) {
+                    return
+                }
+
                 if (state.isDirectory()) {
 
                     this._zone.run(() => this.loadFiles$(selectedPath));
