@@ -90,7 +90,7 @@
     "check-for-leaks": "^1.2.1",
     "codelyzer": "^5.1.2",
     "devtron": "^1.4.0",
-    "electron": "8.2.3",
+    "electron": "8.2.4",
     "electron-builder": "22.5.1",
     "husky": "^0.14.3",
     "mocha": "^5.2.0",
