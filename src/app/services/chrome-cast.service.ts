@@ -28,6 +28,7 @@ export class ChromeCastService {
   }
 
   init() {
+
     ipcRenderer.on('chrome-cast-search-result', (error, args) => {
       this._ngZone.run(() => {
         this._searchDevices$.next(args);
@@ -75,12 +76,18 @@ export class ChromeCastService {
 
   connectToDevice(device) {
 
-    ipcRenderer.send('connect-to-device', { host: device.host });
+    if (device && device.host) {
+
+      ipcRenderer.send('connect-to-device', { host: device.host });
+    }
   }
 
   play(mediaUrl: string, subsUrl: string) {
 
-    ipcRenderer.send('play-media', { mediaURL: mediaUrl, subsUrl: subsUrl });
+    if (this._chromeCastState$.value === ChromeCastState.Connected) {
+
+      ipcRenderer.send('play-media', { mediaURL: mediaUrl, subsUrl: subsUrl });
+    }
 
     // const subUrl = `${this._folderName}\\Mr.Robot.S04E09.WEB.h264-TBS.srt`;
 
