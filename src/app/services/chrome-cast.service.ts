@@ -88,18 +88,15 @@ export class ChromeCastService {
 
       ipcRenderer.send('play-media', { mediaURL: mediaUrl, subsUrl: subsUrl });
     }
-
-    // const subUrl = `${this._folderName}\\Mr.Robot.S04E09.WEB.h264-TBS.srt`;
-
-    // // this._chromeCast.connect(fullVideoPath, subUrl);
-
-    // this.selectedFileName = `http://192.168.1.9:8080/videos/${encodeURI(fullVideoPath)}`;
-
-    // this.selectedSubFileName = `http://192.168.1.9:8080/subs/${encodeURI(subUrl)}`;
   }
 
   disconnect() {
 
     ipcRenderer.send('disconnect-device');
+  }
+
+  seekTo(seconds) {
+
+    ipcRenderer.send('seek-to', { time: seconds });
   }
 }

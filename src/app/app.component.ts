@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { ChromeCastService } from './services/chrome-cast.service';
 import { PathSelectorService } from './services/path-selector.service';
 import { PathModel } from './models/path.model';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,7 @@ import { PathModel } from './models/path.model';
 export class AppComponent implements OnInit {
 
   paths$: Observable<PathModel[]>;
-  selectedPaths$: Observable<string>;
+  breadcrumb$: Observable<string>;
 
   selectedSubFileName;
   selectedVideoFile;
@@ -23,14 +24,15 @@ export class AppComponent implements OnInit {
 
   constructor(
     private readonly _chromeCastService: ChromeCastService,
-    private readonly _pathSelector: PathSelectorService) {
+    private readonly _pathSelector: PathSelectorService,
+    private readonly _sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
 
     this.paths$ = this._pathSelector.selectPaths$();
 
-    this.selectedPaths$ = this._pathSelector.selectFullPaths$();
+    this.breadcrumb$ = this._pathSelector.selectFullPaths$();
 
     this._pathSelector.loadDiskInfo();
   }
@@ -39,7 +41,7 @@ export class AppComponent implements OnInit {
 
     this._pathSelector.selectPath(path, selectedFilePath => {
 
-      this.selectedVideoFile = `http://192.168.1.9:8080/videos/${encodeURI(selectedFilePath)}`;
+      this.selectedVideoFile = this._sanitizer.bypassSecurityTrustResourceUrl(`http://192.168.1.96:8080/videos/${encodeURI(selectedFilePath)}`);
 
       this._chromeCastService.play(selectedFilePath, '');
     });
@@ -48,5 +50,9 @@ export class AppComponent implements OnInit {
   goBack() {
 
     this._pathSelector.goBack();
+  }
+
+  seekTo() {
+    this._chromeCastService.seekTo(3000);
   }
 }
